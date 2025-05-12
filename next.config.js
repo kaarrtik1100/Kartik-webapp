@@ -8,6 +8,11 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  // Ensure client-side code is properly bundled
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, path: false };
+    return config;
+  },
 }
 
 module.exports = nextConfig 
