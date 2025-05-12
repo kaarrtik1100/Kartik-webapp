@@ -1,13 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 const AnimatedBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -16,9 +14,15 @@ const AnimatedBackground = () => {
 
     // Set canvas size
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
     };
+
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
@@ -63,12 +67,13 @@ const AnimatedBackground = () => {
 
     // Create particles
     const particles: Particle[] = [];
-    const particleCount = 50;
+    const particleCount = Math.min(50, Math.floor((canvas.width * canvas.height) / 10000));
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle(canvas));
     }
 
     // Animation loop
+    let animationFrameId: number;
     const animate = () => {
       if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -104,7 +109,7 @@ const AnimatedBackground = () => {
         }
       });
 
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
     animate();
@@ -112,12 +117,9 @@ const AnimatedBackground = () => {
     // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <canvas
