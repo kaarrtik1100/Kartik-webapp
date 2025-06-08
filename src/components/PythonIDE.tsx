@@ -48,10 +48,10 @@ const PythonIDE: React.FC = () => {
         case 'about.py':
           newCommand.output = `Name: Kartik Tripathi
 Role: Python Developer & Cybersecurity Engineer
-Location: Your Location
-Experience: 5+ years in Python development and cybersecurity
+Location: Chennai, India
+Experience: 1+ years in Python development and cybersecurity
 Skills: Python, Django, Flask, Security Testing, Network Security
-Education: Your Education Details
+Education: B.Tech in Computer Science and Engineering with specialization in Cybersecurity from SRM Institute of Science and Technology.
 Languages: English, Hindi
 
 Type 'skills.py' to see detailed skills
@@ -169,15 +169,10 @@ Type 'education.py' to see academic background`;
         case 'education.py':
           newCommand.output = `Education:
 
-1. Master's in Computer Science
-   University: Your University
-   Year: 2019
+1. Bachelor's in Computer Science
+   University: SRM Institute of Science and Technology
+   Year: 2024
    Specialization: Cybersecurity
-
-2. Bachelor's in Computer Science
-   University: Your University
-   Year: 2017
-   Specialization: Software Engineering
 
 Type 'contact.py' to get in touch`;
           newCommand.status = 'success';
@@ -186,13 +181,13 @@ Type 'contact.py' to get in touch`;
         case 'contact.py':
           newCommand.output = `Contact Information:
 
-Email: your.email@example.com
-Phone: +1 (234) 567-890
-Location: Your Location, City, Country
+Email: kartiktripathi.1100@gmail.com
+Phone: +91-7380335664
+Location: Chennai, India
 
 Social Media:
-- GitHub: github.com/yourusername
-- LinkedIn: linkedin.com/in/yourusername
+- GitHub: https://github.com/kaarrtik1100
+- LinkedIn: https://www.linkedin.com/in/kartiktripathi-
 
 Available for:
 - Full-time positions
@@ -207,10 +202,9 @@ Type 'social.py' to connect on social media`;
         case 'social.py':
           newCommand.output = `Social Media Links:
 
-GitHub: github.com/yourusername
-LinkedIn: linkedin.com/in/yourusername
-Twitter: twitter.com/yourusername
-Medium: medium.com/@yourusername
+GitHub: https://github.com/kaarrtik1100
+LinkedIn: https://www.linkedin.com/in/kartiktripathi-
+
 
 Type 'help' to see all available commands`;
           newCommand.status = 'success';
