@@ -1,19 +1,37 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaPlay, FaTerminal, FaPython, FaGithub, FaLinkedin, FaEnvelope, FaCode, FaShieldAlt } from 'react-icons/fa';
 
 interface Command {
   input: string;
   output: string;
   timestamp: Date;
+  status: 'success' | 'error' | 'processing';
 }
 
-const PythonIDE = () => {
+const AVAILABLE_COMMANDS = [
+  'about.py',
+  'skills.py',
+  'experience.py',
+  'projects.py',
+  'certifications.py',
+  'education.py',
+  'contact.py',
+  'social.py',
+  'help',
+  'clear'
+] as const;
+
+const PythonIDE: React.FC = () => {
   const [commands, setCommands] = useState<Command[]>([]);
   const [input, setInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleCommand = async (cmd: string) => {
     setIsProcessing(true);
@@ -21,12 +39,14 @@ const PythonIDE = () => {
       input: cmd,
       output: '',
       timestamp: new Date(),
+      status: 'processing'
     };
 
-    // Process different commands
-    switch (cmd.toLowerCase()) {
-      case 'about.py':
-        newCommand.output = `Name: Kartik Tripathi
+    try {
+      // Process different commands
+      switch (cmd.toLowerCase()) {
+        case 'about.py':
+          newCommand.output = `Name: Kartik Tripathi
 Role: Python Developer & Cybersecurity Engineer
 Location: Your Location
 Experience: 5+ years in Python development and cybersecurity
@@ -36,10 +56,11 @@ Languages: English, Hindi
 
 Type 'skills.py' to see detailed skills
 Type 'experience.py' to see work history`;
-        break;
+          newCommand.status = 'success';
+          break;
 
-      case 'skills.py':
-        newCommand.output = `Technical Skills:
+        case 'skills.py':
+          newCommand.output = `Technical Skills:
 - Python Development
   * Django & Flask
   * REST APIs
@@ -62,10 +83,11 @@ Type 'experience.py' to see work history`;
   * Linux Administration
 
 Type 'certifications.py' to see professional certifications`;
-        break;
+          newCommand.status = 'success';
+          break;
 
-      case 'experience.py':
-        newCommand.output = `Work Experience:
+        case 'experience.py':
+          newCommand.output = `Work Experience:
 
 1. Senior Python Developer (2021 - Present)
    Company: Tech Company Name
@@ -84,10 +106,11 @@ Type 'certifications.py' to see professional certifications`;
    - Reduced incident response time by 60%
 
 Type 'projects.py' to see detailed project information`;
-        break;
+          newCommand.status = 'success';
+          break;
 
-      case 'projects.py':
-        newCommand.output = `Featured Projects:
+        case 'projects.py':
+          newCommand.output = `Featured Projects:
 
 1. Secure API Gateway
    Tech Stack: Python, Django, Redis
@@ -117,10 +140,11 @@ Type 'projects.py' to see detailed project information`;
    GitHub: github.com/yourusername/project
 
 Type 'contact.py' to get in touch`;
-        break;
+          newCommand.status = 'success';
+          break;
 
-      case 'certifications.py':
-        newCommand.output = `Professional Certifications:
+        case 'certifications.py':
+          newCommand.output = `Professional Certifications:
 
 1. Certified Information Systems Security Professional (CISSP)
    Issuer: (ISC)²
@@ -139,10 +163,11 @@ Type 'contact.py' to get in touch`;
    Year: 2019
 
 Type 'education.py' to see academic background`;
-        break;
+          newCommand.status = 'success';
+          break;
 
-      case 'education.py':
-        newCommand.output = `Education:
+        case 'education.py':
+          newCommand.output = `Education:
 
 1. Master's in Computer Science
    University: Your University
@@ -155,10 +180,11 @@ Type 'education.py' to see academic background`;
    Specialization: Software Engineering
 
 Type 'contact.py' to get in touch`;
-        break;
+          newCommand.status = 'success';
+          break;
 
-      case 'contact.py':
-        newCommand.output = `Contact Information:
+        case 'contact.py':
+          newCommand.output = `Contact Information:
 
 Email: your.email@example.com
 Phone: +1 (234) 567-890
@@ -175,10 +201,11 @@ Available for:
 - Technical mentoring
 
 Type 'social.py' to connect on social media`;
-        break;
+          newCommand.status = 'success';
+          break;
 
-      case 'social.py':
-        newCommand.output = `Social Media Links:
+        case 'social.py':
+          newCommand.output = `Social Media Links:
 
 GitHub: github.com/yourusername
 LinkedIn: linkedin.com/in/yourusername
@@ -186,10 +213,11 @@ Twitter: twitter.com/yourusername
 Medium: medium.com/@yourusername
 
 Type 'help' to see all available commands`;
-        break;
+          newCommand.status = 'success';
+          break;
 
-      case 'help':
-        newCommand.output = `Available commands:
+        case 'help':
+          newCommand.output = `Available commands:
 - about.py: Display personal information
 - skills.py: Show technical skills
 - experience.py: Show work history
@@ -202,19 +230,29 @@ Type 'help' to see all available commands`;
 - clear: Clear the terminal
 
 Tip: Try running 'about.py' to start!`;
-        break;
+          newCommand.status = 'success';
+          break;
 
-      case 'clear':
-        setCommands([]);
-        setIsProcessing(false);
-        return;
+        case 'clear':
+          setCommands([]);
+          setIsProcessing(false);
+          return;
 
-      default:
-        newCommand.output = `Command not found: ${cmd}
+        default:
+          newCommand.output = `Command not found: ${cmd}
 Type 'help' to see available commands.`;
+          newCommand.status = 'error';
+      }
+
+      // Add command to history
+      setCommandHistory((prev: string[]) => [cmd, ...prev]);
+      setHistoryIndex(-1);
+    } catch (error) {
+      newCommand.output = `Error executing command: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      newCommand.status = 'error';
     }
 
-    setCommands(prev => [...prev, newCommand]);
+    setCommands((prev: Command[]) => [...prev, newCommand]);
     setIsProcessing(false);
   };
 
@@ -223,6 +261,49 @@ Type 'help' to see available commands.`;
     if (input.trim() && !isProcessing) {
       handleCommand(input.trim());
       setInput('');
+      setSuggestions([]);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (historyIndex < commandHistory.length - 1) {
+        const newIndex = historyIndex + 1;
+        setHistoryIndex(newIndex);
+        setInput(commandHistory[newIndex]);
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        const newIndex = historyIndex - 1;
+        setHistoryIndex(newIndex);
+        setInput(commandHistory[newIndex]);
+      } else if (historyIndex === 0) {
+        setHistoryIndex(-1);
+        setInput('');
+      }
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      if (suggestions.length > 0) {
+        setInput(suggestions[0]);
+        setSuggestions([]);
+      }
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInput(value);
+    
+    // Update suggestions based on input
+    if (value.trim()) {
+      const filtered = AVAILABLE_COMMANDS.filter(cmd => 
+        cmd.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setSuggestions(filtered);
+    } else {
+      setSuggestions([]);
     }
   };
 
@@ -248,39 +329,57 @@ Type 'help' to see available commands.`;
         
         {commands.map((cmd, index) => (
           <div key={index} className="mb-4">
-            <div className="flex items-center gap-2 text-blue-400">
-              <FaTerminal className="w-4 h-4" />
-              <span>{cmd.input}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-blue-400">$</span>
+              <span className="text-white">{cmd.input}</span>
+              {cmd.status === 'processing' && (
+                <span className="text-yellow-400 animate-pulse">...</span>
+              )}
             </div>
-            <div className="mt-2 text-gray-300 whitespace-pre-wrap">
+            <div className={`mt-2 whitespace-pre-wrap ${
+              cmd.status === 'error' ? 'text-red-400' : 'text-gray-300'
+            }`}>
               {cmd.output}
             </div>
           </div>
         ))}
-        
-        {isProcessing && (
-          <div className="text-yellow-400 animate-pulse">
-            Processing command...
-          </div>
-        )}
       </div>
 
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Enter command (e.g., about.py)"
-          className="flex-1 px-4 py-2 bg-black/50 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 text-white font-mono"
-        />
-        <button
-          type="submit"
-          disabled={isProcessing}
-          className="px-4 py-2 bg-blue-500/50 text-white rounded-lg hover:bg-blue-600/50 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-        >
-          <FaPlay className="w-4 h-4" />
-          Run
-        </button>
+      <form onSubmit={handleSubmit} className="relative">
+        <div className="flex items-center gap-2">
+          <span className="text-blue-400">$</span>
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            disabled={isProcessing}
+            className="flex-1 bg-transparent border-none outline-none text-white font-mono"
+            placeholder="Type a command..."
+          />
+          {isProcessing && (
+            <div className="text-yellow-400 animate-pulse">Processing...</div>
+          )}
+        </div>
+
+        {suggestions.length > 0 && (
+          <div className="absolute bottom-full left-0 w-full bg-black/80 rounded-lg p-2 mb-2">
+            {suggestions.map((suggestion, index) => (
+              <div
+                key={index}
+                className="text-gray-300 hover:bg-blue-500/20 cursor-pointer p-1 rounded"
+                onClick={() => {
+                  setInput(suggestion);
+                  setSuggestions([]);
+                  inputRef.current?.focus();
+                }}
+              >
+                {suggestion}
+              </div>
+            ))}
+          </div>
+        )}
       </form>
     </div>
   );
