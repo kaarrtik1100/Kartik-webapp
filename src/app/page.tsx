@@ -62,25 +62,24 @@ export default function Home() {
             <div className="backdrop-blur-sm bg-black/30 p-8 rounded-2xl">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-xl font-bold text-blue-400">Senior Python Developer</h3>
-                  <p className="text-gray-400">Tech Company Name</p>
+                  <h3 className="text-xl font-bold text-blue-400"> Security Engineer</h3>
+                  <p className="text-gray-400">Brop.in</p>
                 </div>
-                <span className="text-gray-400">2021 - Present</span>
+                <span className="text-gray-400">2023 - 2024</span>
               </div>
               <ul className="list-disc list-inside text-gray-300 space-y-2">
                 <li>Developed and maintained secure API endpoints using Django REST framework</li>
                 <li>Implemented automated security testing and vulnerability scanning</li>
-                <li>Led a team of 5 developers in implementing security best practices</li>
               </ul>
             </div>
 
             <div className="backdrop-blur-sm bg-black/30 p-8 rounded-2xl">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-xl font-bold text-blue-400">Cybersecurity Engineer</h3>
-                  <p className="text-gray-400">Security Firm Name</p>
+                  <h3 className="text-xl font-bold text-blue-400">IT Infrastructure Engineer</h3>
+                  <p className="text-gray-400">Redim</p>
                 </div>
-                <span className="text-gray-400">2019 - 2021</span>
+                <span className="text-gray-400">2024 - 2025</span>
               </div>
               <ul className="list-disc list-inside text-gray-300 space-y-2">
                 <li>Conducted penetration testing and security assessments</li>
@@ -124,9 +123,9 @@ export default function Home() {
           <h2 className="section-title">Featured Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             <div className="card backdrop-blur-sm bg-black/30">
-              <h3 className="text-xl font-bold mb-2">Secure API Gateway</h3>
+              <h3 className="text-xl font-bold mb-2">Network Monitoring - IDE based</h3>
               <p className="text-gray-300 mb-4">
-                A Python-based API gateway with advanced security features and rate limiting.
+                A Python-based IDE tool to monitor network activity with advanced security features and rate limiting.
               </p>
               <div className="flex gap-2 mb-4">
                 <span className="px-3 py-1 bg-blue-500/50 rounded-full text-sm">Python</span>
@@ -142,13 +141,14 @@ export default function Home() {
               </a>
             </div>
             <div className="card backdrop-blur-sm bg-black/30">
-              <h3 className="text-xl font-bold mb-2">Network Monitoring Tool</h3>
+              <h3 className="text-xl font-bold mb-2">Common Task Triggers - Linux</h3>
               <p className="text-gray-300 mb-4">
-                Real-time network traffic analysis and security monitoring solution.
+                Created Common Task Triggers that can help in execution of basic tasks using bash script.
               </p>
               <div className="flex gap-2 mb-4">
-                <span className="px-3 py-1 bg-blue-500/50 rounded-full text-sm">Python</span>
+                <span className="px-3 py-1 bg-blue-500/50 rounded-full text-sm">Bash</span>
                 <span className="px-3 py-1 bg-red-500/50 rounded-full text-sm">Networking</span>
+                <span className="px-3 py-1 bg-blue-500/50 rounded-full text-sm">Shell</span>
               </div>
               <a 
                 href="https://github.com/yourusername/project" 
@@ -174,18 +174,18 @@ export default function Home() {
                   <div className="flex items-center gap-4">
                     <FaEnvelope className="w-6 h-6 text-blue-400" />
                     <a href="mailto:your.email@example.com" className="text-gray-300 hover:text-blue-400">
-                      your.email@example.com
+                      kartiktripathi.1100@gmail.com
                     </a>
                   </div>
                   <div className="flex items-center gap-4">
                     <FaPhone className="w-6 h-6 text-blue-400" />
                     <a href="tel:+1234567890" className="text-gray-300 hover:text-blue-400">
-                      +1 (234) 567-890
+                      +91-7380335664
                     </a>
                   </div>
                   <div className="flex items-center gap-4">
                     <FaMapMarkerAlt className="w-6 h-6 text-blue-400" />
-                    <span className="text-gray-300">Your Location, City, Country</span>
+                    <span className="text-gray-300">Chennai, Tamil Nadu, India</span>
                   </div>
                 </div>
               </div>
